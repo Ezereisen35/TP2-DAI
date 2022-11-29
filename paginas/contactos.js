@@ -1,9 +1,14 @@
 import * as Contacts from 'expo-contacts';
 import React, {  useEffect, useState } from 'react';
 import { StyleSheet, View, Text, FlatList, SafeAreaView} from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 
-function contactos() {
+
+function Contactos() {
   const [contactos, setContactos] = useState([]);
+  const [saved, setSaved] = useState();
+
+
   useEffect(() => {
     (async () => {
       const { status } = await Contacts.requestPermissionsAsync();
@@ -14,20 +19,40 @@ function contactos() {
         if(data.length > 0) {
           setContactos(data)
         }
+        console.log(contactos)
       }
     })();
   },[]);
 
-  const renderItem = () =>{
-    console.log(contactos)
-    return(
-      <Text>Nombre: {contactos?.name}</Text>
-    )
-  }
-  
+  useEffect(() => {
+    const traerNumSaved = async () => {
+        setSaved(await AsyncStorage.getItem("celu"));
+    }
+    traerNumSaved();
+  }, []);
+
     return (
       <SafeAreaView style={styles.container}>
-        <FlatList data={contactos} renderItem={renderItem} keyExtractor={item => item.id} />
+        <Text style={{marginBottom:'7%'}}>Tus Contactos:</Text>
+        <FlatList 
+        data={contactos} 
+        
+        keyExtractor={item => item.id}
+
+        renderItem={({item}) =>{
+        return(
+        <View style={styles.contactosEstilo}>
+          <Text style={{bottom:4}}>Nombre: {item.name}</Text>
+          <Text style={{bottom:4}}>Num: {item.phoneNumbers[0].number}</Text>  
+          {item.phoneNumbers && item.phoneNumbers[0].number == saved ? (
+            <Text style={{color: "red"}}>CONTACTO DE EMERGENCIA</Text>
+            ) : (null)
+          }
+        </View>
+        )}
+      } 
+        
+         />
       </SafeAreaView>
     );
   }
@@ -58,6 +83,11 @@ function contactos() {
         flex: 2,
         flexDirection: 'column'
       },
+    contactosEstilo:{
+      marginBottom:'5%',
+      borderBottomWidth:2,
+    },
+    
   });
 
-export default contactos;
+export default Contactos;

@@ -1,5 +1,4 @@
-
-{/*import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Image } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
@@ -32,9 +31,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       {showQR
-        ? <View>
-          <Image source={require('../assets/qrcode.png')} />
-          <Button title="Escanear otro código QR" onPress={() => setShowQR(false)} />
+        ? <View >
+          <View style={styles.imagqr}><Image  source={require('../assets/frame.png')} /></View>
+          
+          <Button title="ESCANEAR OTRO QR" onPress={() => setShowQR(false)} />
         </View>
         : (
           <>
@@ -59,5 +59,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
   },
+
+  imagqr:{
+    marginBottom:'20%',
+    alignItems:'center',
+    justifyContent:'center'
+  }
 });
-*/}

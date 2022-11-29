@@ -1,69 +1,36 @@
-import React, {  useEffect, useState } from 'react';
-import { StyleSheet, View, TextInput, Linking } from 'react-native';
-import { Accelerometer } from 'expo-sensors';
+import React, {useEffect, useState} from "react";
+import { View, StyleSheet, Button, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-function home() {
-  const [numeroCelular,setNumeroCelular]=useState();
-  const [cords, setCords] = useState({
-    x: 0,
-    y: 0,
-    z: 0,
-  });
-  const [subscription, setSubscription] = useState(null);
+function Home() {
+    const navigation = useNavigation();
 
-  const _subscribe = () => {
-    setSubscription(Accelerometer.addListener(accelerometerData => {setCords(accelerometerData);})
-    );
-  };
 
-  const _unsubscribe = () => {
-    subscription && subscription.remove();
-    setSubscription(null);
-  };
+    return (
+        <View >
+            <View style={{marginVertical: 10}}>
+                <Button title="Contactos" onPress={() => navigation.navigate('Contactos')}/>
+            </View>
+            <View style={{marginVertical: 10}}>
+                <Button title="About Us" onPress={() => navigation.navigate("About")}/>
+            </View>
+            <View style={{marginVertical: 10}}>
+                <Button title="Contacto de emergencia" onPress={() => navigation.navigate("Emergency")}/>
+            </View>{/*
+            <View style={{marginVertical: 10}}>
+                <Button title="Temperatura" onPress={() => navigation.navigate("Temperatura")}/>
+    </View>*/}
+        </View>   
+    );        
 
-  useEffect(() => {
-    _subscribe();
-    return () => _unsubscribe();
-  }, []);
-
-  const { x, y, z } = cords;
-  if(z>2||x>2||y>2){Linking.openURL('whatsapp://send?text=¡LLAMADO DE EMERGENCIA!&phone='+numeroCelular)}
-
-  const asignarValor = async(numeroCelularIngresado) => {setNumeroCelular(numeroCelularIngresado)}
-
-  return (
-    <View>
-      <TextInput onChangeText={asignarValor} keyboardType = 'numeric' placeholder="NumeroCelular de emergencia"></TextInput>
-    </View>
-  );
 }
 
+
+
 const styles = StyleSheet.create({
-  container: {
-      backgroundColor: "lightgray",
-      justifyContent: "center",
-      alignItems: "center"
-  },
-  title: {
-      fontSize: 40,
-      fontWeight: "500",
-      marginTop: 20,
-  },
-  logo: {
-      height: 150,
-      width: 150,
-      marginTop: 20,
-  },
-  featureTitle: {
-      fontSize: 20,
-      fontWeight: "400",
-      marginTop: 10,
-      marginBottom: 10
-  },
-  featureContainer: {
-      flex: 2,
-      flexDirection: 'column'
-    },
+
+
+
 });
 
-export default home;
+export default Home;
