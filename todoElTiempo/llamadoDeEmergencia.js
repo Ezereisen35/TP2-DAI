@@ -1,48 +1,31 @@
-import React, {  useEffect, useState } from 'react';
-import { StyleSheet, View, TextInput, Linking } from 'react-native';
-import { Accelerometer } from 'expo-sensors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, useEffect } from "react";
+import { Accelerometer } from "expo-sensors";
 import * as SMS from 'expo-sms';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const isAvailable = await SMS.isAvailableAsync();
-if (isAvailable) {
-  // do your SMS stuff here
-} else {
-  // misfortune... there's no SMS available on this device
+async function enviarMensaje() {
+  const numeroGuardado = await AsyncStorage.getItem("celular");
+  await SMS.sendSMSAsync(numeroGuardado, "¡LLAMADO DE EMERGENCIA!");
 }
 
-try
-{
-    const saved = await AsyncStorage.getItem("phone");
-    await SMS.sendSMSAsync(saved, " NECESITO AYUDA1!!!!!");
-}catch(e){
-    console.log("error")
-}
-function llamadoDeEmergencia() {
-  const [numeroCelular,setNumeroCelular]=useState();
-  const [cords, setCords] = useState({
-    x: 0,
-    y: 0,
-    z: 0,
+export default function mensajeDeEmergencia() {
+
+  const agitar = onShake => {
+  Accelerometer.setUpdateInterval(100);  
+
+    const onUpdate = ({ x, y, z }) => {
+      const acceleration = Math.sqrt(x * x + y * y + z * z);
+      const sensibility = 1.8;
+      if (acceleration >= sensibility) {
+        onShake(acceleration);
+      }
+    };
+    Accelerometer.addListener(onUpdate);
+  };
+  agitar(acceleration => {
+    console.log("¡Agitar!" + acceleration);
+    enviarMensaje();
   });
-  const [subscription, setSubscription] = useState(null);
 
-  const _subscribe = () => {
-    setSubscription(Accelerometer.addListener(accelerometerData => {setCords(accelerometerData);})
-    );
-  };
-
-  const _unsubscribe = () => {
-    subscription && subscription.remove();
-    setSubscription(null);
-  };
-
-  useEffect(() => {
-    _subscribe();
-    return () => _unsubscribe();
-  }, []);
-
-  const { x, y, z } = cords;
-  if(z>2||x>2||y>2){Linking.openURL('whatsapp://send?text=¡LLAMADO DE EMERGENCIA!&phone='+numeroCelular)}
+  return (<></>);
 }
-export default llamadoDeEmergencia;

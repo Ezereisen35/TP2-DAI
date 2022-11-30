@@ -28,18 +28,13 @@ function NumEmergencia(){
     return (
         <View>
             <Text style={styles.titulo}>Numero de Emergencia: {saved}</Text>
-            <TextInput placeholder="Celular de emergencia" onChangeText={setCelu} value={celu} keyboardType="numeric"
+            <TextInput placeholder="Telefono de emergencia" onChangeText={setCelu} value={celu} keyboardType="numeric"
             />
             <Button title="Guardar" onPress={guardarCelu} />
             {error && <Text >El numero ingresado es incorrecto, intente de nuevo</Text>}
         </View>
     );
 }
-
-
-
-
-
 export default NumEmergencia;
 
 const styles = StyleSheet.create({
