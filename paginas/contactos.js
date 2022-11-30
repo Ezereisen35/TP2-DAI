@@ -2,7 +2,7 @@ import * as Contacts from 'expo-contacts';
 import React, {  useEffect, useState } from 'react';
 import { StyleSheet, View, Text, FlatList, SafeAreaView} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Contactos() {
   const [contactos, setContactos] = useState([]);
@@ -29,6 +29,7 @@ function Contactos() {
         setSaved(await AsyncStorage.getItem("celu"));
     }
     traerNumSaved();
+    console.log("CONATACTO DE EMERGENCIA:!!!!!!!!!!!!!!!!!!!!",saved)
   }, []);
 
     return (
@@ -45,7 +46,10 @@ function Contactos() {
           <Text style={{bottom:4}}>Nombre: {item.name}</Text>
           <Text style={{bottom:4}}>Num: {item.phoneNumbers[0].number}</Text>  
           {item.phoneNumbers && item.phoneNumbers[0].number == saved ? (
-            <Text style={{color: "red"}}>CONTACTO DE EMERGENCIA</Text>
+            <>
+            <View style={styles.contactoEmergencia}>
+            <Text style={{color: "white"}}>CONTACTO DE EMERGENCIA</Text>
+              </View></>
             ) : (null)
           }
         </View>
@@ -87,7 +91,12 @@ function Contactos() {
       marginBottom:'5%',
       borderBottomWidth:2,
     },
-    
+    contactoEmergencia:{
+      color:'red',
+      backgroundColor:'red',
+      width:'100%',
+      heigth:'100%',
+    }
   });
 
 export default Contactos;
