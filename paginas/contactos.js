@@ -72,17 +72,7 @@ function Contactos() {
         fontWeight: "500",
         marginTop: 20,
     },
-    logo: {
-        height: 150,
-        width: 150,
-        marginTop: 20,
-    },
-    featureTitle: {
-        fontSize: 20,
-        fontWeight: "400",
-        marginTop: 10,
-        marginBottom: 10
-    },
+ 
     featureContainer: {
         flex: 2,
         flexDirection: 'column'

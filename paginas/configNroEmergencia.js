@@ -28,7 +28,7 @@ function NumEmergencia(){
     return (
         <View>
             <Text style={styles.titulo}>Numero de Emergencia: {saved}</Text>
-            <TextInput placeholder="Telefono de emergencia" onChangeText={setCelu} value={celu} keyboardType="numeric"
+            <TextInput placeholder="Telefono de emergencia" onChangeText={setCelu} value={celu} 
             />
             <Button title="Guardar" onPress={guardarCelu} />
             {error && <Text >El numero ingresado es incorrecto, intente de nuevo</Text>}
